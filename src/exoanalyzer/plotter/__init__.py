@@ -32,7 +32,7 @@ def plot_pair_ratio(pair_data, plotLabel, **kwargs):
         'use_log10': True,
         'max_deviations': None,
         'file_path': "./graphs/",
-        'file_name': f"Graph_of_{plotLabel}.png",
+        'file_name': f"Graph_of_{plotLabel}_Pair_Ratios.png",
     }
     kwargs = { **defaultKwargs, **kwargs }
     max_deviations = kwargs.get('max_deviations') or None
