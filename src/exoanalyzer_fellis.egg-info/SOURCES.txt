@@ -12,4 +12,5 @@ src/exoanalyzer/util/readables.py
 src/exoanalyzer_fellis.egg-info/PKG-INFO
 src/exoanalyzer_fellis.egg-info/SOURCES.txt
 src/exoanalyzer_fellis.egg-info/dependency_links.txt
+src/exoanalyzer_fellis.egg-info/requires.txt
 src/exoanalyzer_fellis.egg-info/top_level.txt
