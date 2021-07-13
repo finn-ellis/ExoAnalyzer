@@ -1,6 +1,5 @@
 """Queries the NASA Exoplanet Archive's TAP API."""
 
-import urllib.request
 import pyvo as vo
 
 _CLIENT_URL = "https://exoplanetarchive.ipac.caltech.edu/TAP"
@@ -17,8 +16,6 @@ _DEFAULT_COLUMNS = ["pl_name",
     "pl_dens",
     "sy_dist",
     "st_metratio",
-    # "pl_refname",
-    # "st_refname",
     "dec"]
 _DEFAULT_DB = "ps"
 
@@ -51,6 +48,7 @@ def query(**kwargs):
     else:
         print("PROCESSING DATA")
 
+        # restructure data into a list of planets
         pl_list = []
         used_names = []
         for row in result:
