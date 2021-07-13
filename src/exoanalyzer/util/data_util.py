@@ -16,6 +16,12 @@ def get_system_planets(data, do_sort = True):
     return hosts
 
 def get_system_pairs(data, do_sort = True):
+    """
+        Get pairs of planets.
+
+        Args:
+            'do_sort': Should the planets be sorted by distance from host star
+    """
     system_planets = get_system_planets(data, do_sort)
     pairs = []
     for host, planets in system_planets.items():

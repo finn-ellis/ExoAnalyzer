@@ -1,3 +1,4 @@
+import os
 from matplotlib import pyplot as plt
 import numpy as np
 from ..util import get_readable
@@ -21,7 +22,7 @@ def plot_pair_comparison(pair_data, plotLabel, **kwargs):
         'file_path': "./graphs/",
         'file_name': "Graph_of_"+plotLabel+".png",
     }
-    kwargs = { ** defaultKwargs, **kwargs }
+    kwargs = { **defaultKwargs, **kwargs }
     use_log10 = kwargs.get("use_log10")
     max_deviations = kwargs.get("max_deviations") or None
 
@@ -42,7 +43,7 @@ def plot_pair_comparison(pair_data, plotLabel, **kwargs):
     # plt.xlabel("Ratio of " + readableLabels[plotLabel] + " (A/B)")
     # plt.ylabel("Ratio of " + readableLabels[plotLabelB] + " (A/B)")
 
-    title = get_readable[plotLabel]
+    title = get_readable(plotLabel)
     if max_deviations:
         title = title + " (|x-x̄| < " + str(max_deviations) + "σ)"
     plt.title(title)
@@ -56,4 +57,8 @@ def plot_pair_comparison(pair_data, plotLabel, **kwargs):
     plt.ylabel(ylabel)
     full_path = kwargs.get("file_path") + kwargs.get("file_name")
     print("Saving: '" + full_path + "', length of data: " + str(len(pair_data)))
-    plt.savefig(full_path)
+    try:
+        plt.savefig(full_path)
+    except:
+        os.mkdir(kwargs.get("file_path"))
+        plt.savefig(full_path)

@@ -1,3 +1,6 @@
+# import sys
+# import os
+# sys.path.append(os.path.abspath("../src"))
 import exoanalyzer
 
 data = exoanalyzer.data.query()

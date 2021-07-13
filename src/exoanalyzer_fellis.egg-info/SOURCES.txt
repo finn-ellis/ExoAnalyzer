@@ -7,7 +7,7 @@ src/exoanalyzer/data/__init__.py
 src/exoanalyzer/data/query.py
 src/exoanalyzer/plotter/__init__.py
 src/exoanalyzer/util/__init__.py
-src/exoanalyzer/util/data_handler.py
+src/exoanalyzer/util/data_util.py
 src/exoanalyzer/util/readables.py
 src/exoanalyzer_fellis.egg-info/PKG-INFO
 src/exoanalyzer_fellis.egg-info/SOURCES.txt
