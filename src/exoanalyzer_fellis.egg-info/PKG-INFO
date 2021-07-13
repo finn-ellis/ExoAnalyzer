@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: exoanalyzer-fellis
+Version: 0.0.11
+Summary: Tool for processing and visualizing exoplanet data.
+Home-page: https://github.com/finn-ellis/exoanalyzer
+Author: Finn Ellis
+Author-email: xfinnellisx@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/finn-ellis/exoanalyzer/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# ExoAnalyzer
+Analyzes data from the NASA exoplanet archive
+
+Still need to make this a python package and clean up usage.
+
+An example of using the tool:
+```python
+import exoanalyzer
+
+data = exoanalyzer.data.query()
+pairs = exoanalyzer.util.get_system_pairs(data)
+
+exoanalyzer.plot_pair_comparison(pairs, 'pl_orbeccen', use_log10 = False, max_deviations = 3)
+```
+
