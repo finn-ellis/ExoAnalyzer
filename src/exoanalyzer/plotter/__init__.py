@@ -71,7 +71,7 @@ def plot_dual(data, x_label, y_label, **kwargs):
     defaultKwargs = {
         'use_log10': True,
         'file_path': "./graphs/",
-        'file_name': "Graph_of_"+x_label+"_and_"+y_label+".png",
+        'file_name': f"Graph_of_{x_label}_and_{y_label}.png",
     }
     kwargs = { **defaultKwargs, **kwargs }
 
