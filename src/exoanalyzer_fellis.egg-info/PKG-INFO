@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: exoanalyzer-fellis
-Version: 0.0.11
+Version: 0.0.12
 Summary: Tool for processing and visualizing exoplanet data.
 Home-page: https://github.com/finn-ellis/exoanalyzer
 Author: Finn Ellis
@@ -16,9 +16,12 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 
 # ExoAnalyzer
-Analyzes data from the NASA exoplanet archive
+Provides tools to analyze data from the NASA exoplanet archive.
 
-Still need to make this a python package and clean up usage.
+Install using command:
+```
+python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps exoanalyzer-fellis
+```
 
 An example of using the tool:
 ```python

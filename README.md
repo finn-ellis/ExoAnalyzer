@@ -1,7 +1,10 @@
 # ExoAnalyzer
-Analyzes data from the NASA exoplanet archive
+Provides tools to analyze data from the NASA exoplanet archive.
 
-Still need to make this a python package and clean up usage.
+Install using command:
+```
+python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps exoanalyzer-fellis
+```
 
 An example of using the tool:
 ```python
