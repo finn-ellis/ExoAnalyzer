@@ -1,23 +1,34 @@
 # ExoAnalyzer
 Provides tools to analyze data and graph from the NASA exoplanet archive.
 
+Provides functions to graph various quantitative data about exoplanets.
+See example code below for examples on how to use. List of data options coming soon.
+
 ## Installation
 ```
-python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps exoanalyzer-fellis
+pip install --index-url https://test.pypi.org/simple/ --no-deps exoanalyzer-fellis
 ```
 
 ## Example Code
 ```python
-import exoanalyzer
-
 data = exoanalyzer.data.query()
 exoanalyzer.plot_dual(data, 'pl_orbsmax', 'pl_bmasse', use_log10 = True)
+exoanalyzer.plot_dual(data, 'pl_orbsmax', 'pl_orbper', use_log10 = True)
+exoanalyzer.plot_dual(data, 'pl_orbsmax', 'pl_orbeccen', use_log10 = True)
 
 pairs = exoanalyzer.util.get_system_pairs(data)
-exoanalyzer.plot_pair_ratio(pairs, 'pl_orbeccen', use_log10 = False, max_deviations = 3)
+exoanalyzer.plot_pair_ratio(pairs, 'pl_bmasse', use_log10 = True, max_deviations = 3)
+exoanalyzer.plot_pair_ratio(pairs, 'pl_masse', use_log10 = True, max_deviations = 3)
+exoanalyzer.plot_pair_ratio(pairs, 'pl_orbper', use_log10 = True, max_deviations = 3)
 ```
 
 ## Versions
+### 0.0.17
+#### Added:
+    exoanalyzer.util.get_label_list()
+    > returns:
+        list: A list of all possible data categories for obtainable exoplanet data.
+
 ### 0.0.14: New feature
 #### Added:
     exoanalyzer.plot_dual(data, x_label, y_label, **kwargs)
