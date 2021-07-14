@@ -65,3 +65,27 @@ def remove_outliers_from_both(a, b, md):
             removes += 1
             a.pop(i)
             b.pop(i)
+
+# def get_datas(data, label, removeInvalid = True):
+#     datas = []
+#     for pl in data:
+#         if removeInvalid:
+#             val = pl[label]
+#             if is_num_clean(val):
+#                 datas.append(val)
+#         else:
+#             datas.append(pl[label])
+#     return datas
+
+def remove_any_nan(data, labelA, labelB):
+    listA = []
+    listB = []
+
+    for pl in data:
+        valA = pl[labelA]
+        valB = pl[labelB]
+        if is_num_clean(valA) and is_num_clean(valB):
+            listA.append(valA)
+            listB.append(valB)
+
+    return listA, listB

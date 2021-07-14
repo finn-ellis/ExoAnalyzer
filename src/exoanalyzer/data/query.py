@@ -1,5 +1,6 @@
 """Queries the NASA Exoplanet Archive's TAP API."""
 
+from numpy import NaN
 import pyvo as vo
 
 _CLIENT_URL = "https://exoplanetarchive.ipac.caltech.edu/TAP"
@@ -56,14 +57,12 @@ def query(**kwargs):
                 dict = pl_list[used_names.index(row["pl_name"])]
                 for columnLabel in columns:
                     val = row[columnLabel]
-                    if val:
-                        dict[columnLabel] = val
+                    dict[columnLabel] = val or NaN
             else:
                 dict = {}
                 for columnLabel in columns:
                     val = row[columnLabel]
-                    if val:
-                        dict[columnLabel] = val
+                    dict[columnLabel] = val or NaN
                 pl_list.append(dict)
                 used_names.append(row["pl_name"])
 

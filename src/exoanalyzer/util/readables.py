@@ -12,7 +12,7 @@ _READABLE_LABELS = {
         'pl_controv_flag': 'Controversial Flag',
         'pl_refname': 'Planetary Parameter Reference',
         'pl_orbper': 'Orbital Period [days]',
-        'pl_orbsmax': 'Orbit Semi-Major Axis [au])',
+        'pl_orbsmax': 'Orbit Semi-Major Axis [au]',
         'pl_rade': 'Planet Radius [Earth Radius]',
         'pl_radj': 'Planet Radius [Jupiter Radius]',
         'pl_masse': 'Planet Mass [Earth Mass]',

@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import numpy as np
 from ..util import get_readable
-from ..util import get_pair_data, remove_outliers_from_both
+from ..util import get_pair_data, remove_outliers_from_both, remove_any_nan
 
 def save_plt(plt, file_path, file_name):
     full_path = file_path + file_name
@@ -27,6 +27,8 @@ def plot_pair_ratio(pair_data, plotLabel, **kwargs):
         'file_name': Custom name for the file.
     """
 
+    plt.clf()
+
     # setup arguments
     defaultKwargs = {
         'use_log10': True,
@@ -39,6 +41,8 @@ def plot_pair_ratio(pair_data, plotLabel, **kwargs):
 
     # define axes
     extracted = get_pair_data(pair_data, plotLabel)
+    # this could be optimized and turned into one for loop but i like the
+    # clean syntax of this solution
     x = [vals[0]/vals[1] for vals in extracted]
     y = [vals[0] for vals in extracted]
 
@@ -67,6 +71,8 @@ def plot_dual(data, x_label, y_label, **kwargs):
     Plot chart with two different categories as x and y
     """
 
+    plt.clf()
+
     # setup arguments
     defaultKwargs = {
         'use_log10': True,
@@ -76,8 +82,7 @@ def plot_dual(data, x_label, y_label, **kwargs):
     kwargs = { **defaultKwargs, **kwargs }
 
     # get axes for
-    x = [pl[x_label] for pl in data]
-    y = [pl[y_label] for pl in data]
+    x, y = remove_any_nan(data, x_label, y_label)
 
     plt.scatter(x, y, color="red")
 
