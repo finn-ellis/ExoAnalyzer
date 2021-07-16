@@ -2,22 +2,24 @@
 
 from numpy import NaN
 import pyvo as vo
+from ..util import get_label_list
 
 _CLIENT_URL = "https://exoplanetarchive.ipac.caltech.edu/TAP"
-_DEFAULT_COLUMNS = ["pl_name",
-    "hostname",
-    "disc_year",
-    "discoverymethod",
-    "pl_orbper",
-    "pl_orbsmax",
-    "pl_orbeccen",
-    "pl_rade",
-    "pl_masse",
-    "pl_bmasse",
-    "pl_dens",
-    "sy_dist",
-    "st_metratio",
-    "dec"]
+# _DEFAULT_COLUMNS = ["pl_name",
+#     "hostname",
+#     "disc_year",
+#     "discoverymethod",
+#     "pl_orbper",
+#     "pl_orbsmax",
+#     "pl_orbeccen",
+#     "pl_rade",
+#     "pl_masse",
+#     "pl_bmasse",
+#     "st_met",
+#     "st_teff",
+#     "st_metratio",
+#     "st_mass"]
+_DEFAULT_COLUMNS = get_label_list()
 _DEFAULT_DB = "ps"
 
 # Database to query. View databases at https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html

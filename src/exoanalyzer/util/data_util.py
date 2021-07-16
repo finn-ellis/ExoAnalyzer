@@ -15,6 +15,14 @@ def get_system_planets(data, do_sort = True):
             hosts[hostname] = sorted(planets, key=lambda i: data[i]['pl_orbsmax'] or 0)
     return hosts
 
+def get_system_data(data):
+    sys_planets = get_system_planets(data)
+
+    for name, list in sys_planets.items():
+        sys_planets[name] = [data[id] for id in list]
+
+    return sys_planets
+
 def get_system_pairs(data, do_sort = True):
     """
         Get pairs of planets.
@@ -89,3 +97,14 @@ def remove_any_nan(data, labelA, labelB):
             listB.append(valB)
 
     return listA, listB
+
+def remove_nan_lists(listA, listB):
+    removed = 0
+    for i in range(len(listA)):
+        i -= removed
+        valA = listA[i]
+        valB = listB[i]
+        if not is_num_clean(valA) or not is_num_clean(valB):
+            removed += 1
+            listA.pop(i)
+            listB.pop(i)

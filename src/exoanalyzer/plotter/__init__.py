@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import numpy as np
 from ..util import get_readable
-from ..util import get_pair_data, remove_outliers_from_both, remove_any_nan
+from ..util import get_pair_data, remove_outliers_from_both, remove_any_nan, get_system_data, remove_nan_lists
 
 def save_plt(plt, file_path, file_name):
     full_path = file_path + file_name
@@ -93,6 +93,90 @@ def plot_dual(data, x_label, y_label, **kwargs):
 
     x_readable = get_readable(x_label)
     y_readable = get_readable(y_label)
+    plt.title(x_readable+" and "+y_readable)
+    plt.xlabel(x_readable)
+    plt.ylabel(y_readable)
+    save_plt(plt, kwargs.get("file_path"), kwargs.get("file_name"))
+
+def plot_system_average(data, main_label, avg_label, **kwargs):
+    """
+        Compare average of system planets to a value of the first planet in the system.
+    """
+
+    plt.clf()
+
+    defaultKwargs = {
+        'use_log10_main': False,
+        'use_log10_avg': True,
+        'file_path': "./graphs/",
+        'file_name': f"Graph_of_avg_{main_label}_and_{avg_label}.png",
+    }
+    kwargs = { **defaultKwargs, **kwargs }
+
+
+    sys_data = get_system_data(data)
+    avgs = {}
+    for host, pls in sys_data.items():
+        avg = 0
+        for pl in pls:
+            avg += pl[avg_label]
+        avg/=len(pls)
+        avgs[host] = avg
+    
+    x = [sys[0][main_label] for _, sys in sys_data.items()]
+    y = avgs.values()
+    
+    plt.scatter(x, y, color="red")
+
+    axes = plt.gca()
+    if kwargs.get('use_log10_main'):
+        axes.set_xscale('log')
+    if kwargs.get('use_log10_avg'):
+        axes.set_yscale('log')
+    x_readable = get_readable(main_label)
+    y_readable = "Avg of " + get_readable(avg_label)
+    plt.title(x_readable+" and "+y_readable)
+    plt.xlabel(x_readable)
+    plt.ylabel(y_readable)
+    save_plt(plt, kwargs.get("file_path"), kwargs.get("file_name"))
+
+def plot_ratio_to_greatest(data, label, **kwargs):
+    """
+        Plots ratio 
+    """
+    defaultKwargs = {
+        'use_log10': True,
+        'file_path': "./graphs/",
+        'file_name': f"Graph_of_greatest_{label}.png",
+    }
+    kwargs = { **defaultKwargs, **kwargs }
+
+    x = []
+    y = []
+
+    sys_data = get_system_data(data)
+    for host, pls in sys_data.items():
+        if len(pls) < 2:
+            continue
+        total = 0
+        greatest = -1e15
+        for pl in pls:
+            val = pl[label]
+            total += val
+            greatest = max(greatest, val)
+        ratio = greatest/total
+        x.append(ratio*100)
+        y.append(greatest)
+    
+    # remove_nan_lists(x, y)
+    
+    plt.scatter(x, y, color="red")
+
+    if kwargs.get('use_log10'):
+        axes = plt.gca()
+        axes.set_yscale('log')
+    x_readable = "% of greatest to total"
+    y_readable = "Greatest " + get_readable(label)
     plt.title(x_readable+" and "+y_readable)
     plt.xlabel(x_readable)
     plt.ylabel(y_readable)
