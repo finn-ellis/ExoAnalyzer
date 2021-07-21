@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: exoanalyzer
-Version: 0.1
+Version: 0.11
 Summary: Tool for processing and visualizing exoplanet data.
 Home-page: https://github.com/finn-ellis/exoanalyzer
 Author: Finn Ellis
@@ -22,6 +22,11 @@ Provides functions to graph various quantitative data about exoplanets.
 See example code below for examples on how to use. List of data options coming soon.
 
 ## Installation
+Stable release:
+```
+pip install exoanalyzer
+```
+Beta test versions:
 ```
 pip install --index-url https://test.pypi.org/simple/ --no-deps exoanalyzer-fellis
 ```
@@ -45,8 +50,18 @@ exoanalyzer.plot_dual(data, 'pl_orbsmax', 'pl_bmasse', use_log10 = True)
 exoanalyzer.plot_system_average(data, "st_met", "pl_bmasse", use_log10_main=False, use_log10_avg=True)
 exoanalyzer.plot_ratio_to_greatest(data, "pl_bmasse", use_log10=True)
 
+exoanalyzer.plot_pl_categories(data, 'pl_orbsmax', {
+    "<1 AU": lambda a: a < 1,
+    ">1 AU": lambda b: b > 1
+})
+
 pairs = exoanalyzer.util.get_system_pairs(data)
 exoanalyzer.plot_pair_ratio(pairs, 'pl_orbeccen', use_log10 = False, max_deviations = 3)
+
+exoanalyzer.plot_pair_comparison(pairs, 'pl_bmasse', {
+    "Massive Inner": lambda a, b: a/b > 1,
+    "Massive Outer": lambda a, b: a/b < 1
+})
 ```
 
 ## Versions
