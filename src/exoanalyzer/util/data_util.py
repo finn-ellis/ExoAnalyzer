@@ -12,7 +12,17 @@ def get_system_planets(data, do_sort = True):
         hosts[hostname].append(planet_id)
     if do_sort:
         for hostname, planets in hosts.items():
-            hosts[hostname] = sorted(planets, key=lambda i: data[i]['pl_orbsmax'] or 0)
+            all_planets_valid = True
+            for i in planets:
+                if math.isnan(data[i]['pl_orbsmax']):
+                    all_planets_valid = False
+                    break
+            
+            if all_planets_valid:
+                hosts[hostname] = sorted(planets, key=lambda i: data[i]['pl_orbsmax'] or 0)
+            else:
+                hosts[hostname] = planets
+            all_planets_valid = True
     return hosts
 
 def get_system_data(data):
@@ -32,10 +42,10 @@ def get_system_pairs(data, do_sort = True):
     """
     system_planets = get_system_planets(data, do_sort)
     pairs = []
-    for host, planets in system_planets.items():
+    for planets in system_planets.values():
         if len(planets) > 1:
             for i in range(len(planets)):
-                if i%2==0:
+                if (i+1)%2==0:
                     pairs.append((data[planets[i-1]], data[planets[i]]))
     return pairs
 
@@ -43,19 +53,28 @@ def is_num_clean(n):
     return not (math.isinf(n) or math.isnan(n))
 
 def get_pair_data(pairs, label, clean=True, **kwargs):
-    pairData = []
-    for pair in pairs:
+    modifier = kwargs.get("modifier")
+    pair_data = []
+    pair_ids = []
+
+    for i in range(len(pairs)):
+        pair = pairs[i]
         valA, valB = pair[0].get(label), pair[1].get(label)
         if valA and valB:
-            modifier = kwargs.get("modifier")
             if modifier:
                 valA, valB = modifier(valA), modifier(valB)
             if clean:
-                if valA != 0 and valB != 0 and is_num_clean(valA) and is_num_clean(valB):
-                    pairData.append([valA, valB])
+                if is_num_clean(valA) and is_num_clean(valB): #valA != 0 and valB != 0
+                    pair_data.append([valA, valB])
+                    pair_ids.append(i)
+                #else:
+                #should it append something here to keep indices consistent?
             else:
-                pairData.append([valA, valB])
-    return pairData
+                pair_data.append([valA, valB])
+                pair_ids.append(i)
+        #else:
+        #should it append here too to keep indices consistent?
+    return pair_data, pair_ids
 
 def get_is_outlier(array, max_deviations = 2):
     mean = np.mean(array)

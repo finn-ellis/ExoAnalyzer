@@ -2,8 +2,7 @@ import os
 from matplotlib import pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import numpy as np
-from ..util import get_readable
-from ..util import get_pair_data, remove_outliers_from_both, remove_any_nan, get_system_data, remove_nan_lists
+from ..util import get_readable, get_pair_data, remove_outliers_from_both, remove_any_nan, get_system_data, is_num_clean
 
 def save_plt(plt, file_path, file_name):
     full_path = file_path + file_name
@@ -40,7 +39,7 @@ def plot_pair_ratio(pair_data, plotLabel, **kwargs):
     max_deviations = kwargs.get('max_deviations') or None
 
     # define axes
-    extracted = get_pair_data(pair_data, plotLabel)
+    extracted, _ = get_pair_data(pair_data, plotLabel)
     # this could be optimized and turned into one for loop but i like the
     # clean syntax of this solution
     x = [vals[0]/vals[1] for vals in extracted]
@@ -180,4 +179,144 @@ def plot_ratio_to_greatest(data, label, **kwargs):
     plt.title(x_readable+" and "+y_readable)
     plt.xlabel(x_readable)
     plt.ylabel(y_readable)
+    save_plt(plt, kwargs.get("file_path"), kwargs.get("file_name"))
+
+def plot_pair_comparison(pair_data, label, categories, **kwargs):
+    """
+    Creates a graph which categorizes pairs into specified categories.
+
+    Arguments:
+        'file_path': File path to save graphs to.
+        'file_name': Custom name for the file.
+    """
+
+    plt.clf()
+
+    # setup arguments
+    defaultKwargs = {
+        'file_path': "./graphs/",
+        'file_name': f"Graph_of_{label}_Pair_Bar_Comparison.png",
+    }
+    kwargs = { **defaultKwargs, **kwargs }
+
+    # define axes
+    extracted, pair_ids = get_pair_data(pair_data, label)
+
+    positions = [*range(0, len(categories)+1)]
+    values = {}
+    for pair in extracted:
+        memberOf = None
+        for name, category in categories.items():
+            isMember = category(*pair)
+            if isMember:
+                memberOf = name
+                break
+        if memberOf:
+            if not values.get(memberOf):
+                values[memberOf] = 0
+            values[memberOf] += 1
+        else:
+            print("Other:", pair_data[pair_ids[extracted.index(pair)]][0]["pl_name"], pair_data[pair_ids[extracted.index(pair)]][1]["pl_name"])
+            if not values.get("Other"):
+                values["Other"] = 0
+            values["Other"] += 1
+    
+    value_list = []
+    category_names = list(categories.keys())
+    if values.get("Other"):
+        category_names.append("Other")
+    for name in category_names:
+        value_list.append(values[name])
+
+    print(positions, value_list)
+
+    # create the plot
+    bar = plt.bar(positions, value_list, color="red", width=0.75)
+    
+    ax = plt.gca()
+    labels = [""]
+    for bar_label in category_names:
+        labels.append("")
+        labels.append(bar_label)
+    ax.set_xticklabels(labels)
+    total = len(extracted)
+    labels = []
+    for val in value_list:
+        labels.append(str(round(val/total * 1000)/10) + "%")
+    ax.bar_label(bar, labels=labels)
+
+    plt.title(get_readable(label))
+    # plt.xlabel("Category")
+    plt.ylabel("# of Planets")
+    save_plt(plt, kwargs.get("file_path"), kwargs.get("file_name"))
+
+def plot_pl_categories(data, label, categories, **kwargs):
+    """
+    Creates a graph which categorizes planets into specified categories.
+
+    Arguments:
+        'file_path': File path to save graphs to.
+        'file_name': Custom name for the file.
+    """
+
+    plt.clf()
+
+    # setup arguments
+    defaultKwargs = {
+        'file_path': "./graphs/",
+        'file_name': f"Bar_Categories_of_{label}.png",
+    }
+    kwargs = { **defaultKwargs, **kwargs }
+
+    # define axes
+
+    positions = [*range(0, len(categories)+1)]
+    values = {}
+    for pl in data:
+        val = pl[label]
+        # if not is_num_clean(val):
+        #     continue
+        memberOf = None
+        for name, category in categories.items():
+            isMember = category(val)
+            if isMember:
+                memberOf = name
+                break
+        if memberOf:
+            if not values.get(memberOf):
+                values[memberOf] = 0
+            values[memberOf] += 1
+        else:
+            print("Other:", pl["pl_name"])
+            if not values.get("Other"):
+                values["Other"] = 0
+            values["Other"] += 1
+    
+    value_list = []
+    category_names = list(categories.keys())
+    if values.get("Other"):
+        category_names.append("Other")
+    for name in category_names:
+        value_list.append(values[name])
+
+    print(positions, value_list)
+
+    # create the plot
+    bar = plt.bar(positions, value_list, color="red", width=0.75)
+    
+    ax = plt.gca()
+    labels = [""]
+    for bar_label in category_names:
+        labels.append("")
+        labels.append(bar_label)
+    ax.set_xticklabels(labels)
+    total = len(data)
+    labels = []
+    for val in value_list:
+        labels.append(str(round(val/total * 1000)/10) + "%")
+    ax.bar_label(bar, labels=labels)
+
+    plt.title(get_readable(label))
+    # plt.xlabel("Category")
+    plt.ylabel("# of Planets")
     save_plt(plt, kwargs.get("file_path"), kwargs.get("file_name"))
